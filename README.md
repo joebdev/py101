@@ -1,1 +1,1 @@
-# py101
+# py101 -- All of my work for Py101 will be found in this repo, separated out by lessons
