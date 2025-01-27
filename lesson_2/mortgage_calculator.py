@@ -13,6 +13,7 @@ def invalid_num(number_str):
         return True
     return False
 
+# House the project in a function that can be called as needed
 def mortgage_calculator():
     # Start with 'yes' to start process
     user_input = 'yes'
