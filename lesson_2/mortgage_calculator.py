@@ -1,72 +1,79 @@
+import os
+import math
+
 def prompt(message):
-    print(f'==> {message}')
+    print(f'===> {message}')
 
-prompt("Welcome to the Mortgage Calculator!")
-
-# Make sure the input is a valid number
+# Check to make sure the input is a valid number greater than 0,
+    # not inf, not nan
 def invalid_num(number_str):
     try:
         num = float(number_str)
-        if num <= 0:
+        if num <= 0 or math.isnan(num) or num == float('inf'):
             raise ValueError(f'Value must be > 0: {number_str}')
     except ValueError:
         return True
     return False
 
-# House the project in a function that can be called as needed
-def mortgage_calculator():
-    # Start with 'yes' to start process
-    user_input = 'yes'
-    # start a while loop, while user_input is yes run the code:
-    while user_input == 'yes':
-    # Ask the user for the loan price
-        prompt("How much is your loan?")
-        prompt("Example: 1_000_000 for 1000000")
+# Function to get the loan amount, check for validity,
+    #  and return the loan amount
+def find_loan_amount():
+    prompt("How much is  your loan?")
+    prompt("Example: 1_000_00 for 1000000")
+    loan_amount = input()
+    while invalid_num(loan_amount):
+        prompt("Please enter a valid loan amount, don't use nan or inf")
         loan_amount = input()
+    return loan_amount
 
-        while invalid_num(loan_amount):
-            prompt("Please enter a valid loan amount")
-            loan_amount = input()
-
-        # Find the APR <-- Get APR as a numerical value and
-            # then divide it by 100 to get the percentage
-        prompt("What is your interest rate?")
-        prompt("Example: 5 for 5% or 7.5 for 7.5%")
+# Function to get the apr, check for validity,
+    #  and return the apr
+def find_apr():
+    prompt("What is your interest rate?")
+    prompt("Example: 5 for 5% or 7.5 for 7.5%")
+    apr = input()
+    while invalid_num(apr):
+        prompt("Please enter a valid interest rate")
         apr = input()
+    return apr
 
-        while invalid_num(apr):
-            prompt("Please enter a valid APR")
-            apr = input()
-
-        # Find the length of the loan in years
-        prompt("How many years is your loan?")
+# Function to get the loan duration, check for validity,
+    #  and return the loan duration
+def find_loan_duration():
+    prompt("How many years is your loan?")
+    loan_duration = input()
+    while invalid_num(loan_duration):
+        prompt("Please enter a valid number of years")
         loan_duration = input()
+    return loan_duration
 
-        while invalid_num(loan_duration):
-            prompt("Please enter a valid number of years")
-            loan_duration = input()
+# Function to get calculate the monthly payment,
+    # check for validity, and return payment amount
+def calculate_monthly_payment():
+    price_of_loan = float(find_loan_amount())
+    loan_duration_in_months = float(find_loan_duration()) * 12
+    annual_interest_rate = float(find_apr()) / 100
+    monthly_interst_rate = annual_interest_rate / 12
 
-        # Take the duration in years and divide it by 12 to get the
-            # monthly duration
-        loan_duration_in_months = float(loan_duration) * 12
+    monthly_payment = float(price_of_loan) * (
+        monthly_interst_rate / (1 - (1 + monthly_interst_rate) ** (
+            -loan_duration_in_months
+        ))
+    )
 
-        # Divide the apr by 12 to get the monthly interest rate
-        annual_interest_rate = float(apr) / 100
-        monthly_interest_rate = annual_interest_rate / 12
+    print(f'Your monthly payment would be: ${round(monthly_payment, 2)}')
 
-        # Calculate the monthly payment using the formula given
-        monthly_payment = float(loan_amount) * (
-            monthly_interest_rate / (1 - (1 + monthly_interest_rate) ** (
-                -loan_duration_in_months)))
-
-        # Give the user the monthly amount
-        print(f'Your monthly payment would be: ${round(monthly_payment, 2)}')
-
-        # Ask the user if they would like to calculate another payment
+# Runs the calculator, and checks after each time to see if user would like
+    # to continue with another calculation or not
+def run_calculator():
+    user_input = "yes"
+    while user_input[0] == "y":
+        os.system('clear')
+        calculate_monthly_payment()
         prompt('Would you like to calculate another payment?')
         prompt('Please enter "yes" or "no".')
+        user_input = input().lower()
+        if user_input[0] != "y":
+            break
 
-        # if the input is yes, it'll rerun, if anything else, exit
-        user_input = input()
-
-mortgage_calculator()
+run_calculator()
