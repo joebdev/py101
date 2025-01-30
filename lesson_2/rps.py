@@ -12,18 +12,6 @@ import random
 # Lizard beats: Spock, Paper        Loses to: Scissors, Spock
 # Spock beats: Scissors, Rock       Loses to: Paper, Lizard
 
-# if ((player == 'rock' and computer == 'scissors') or
-    #     (player == 'paper' and computer == 'rock') or
-    #     (player == 'scissors' and computer == 'paper')):
-    #     prompt('You win!')
-    # elif ((player == 'rock' and computer == 'paper') or
-    #     (player == 'paper' and computer == 'scissors') or
-    #     (player == 'scissors' and computer == 'rock')):
-    #     prompt('Computer wins!')
-    # else:
-    #     prompt("It's a tie!")
-
-
 VALID_CHOICES = ['rock', 'paper', 'scissors', 'lizard', 'spock']
 
 WINNING_COMBOS = {
